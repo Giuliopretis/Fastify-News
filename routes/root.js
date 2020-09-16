@@ -1,12 +1,26 @@
 'use strict'
 
 const schemas = require('../schemas')
+
 // const opts = require('./optionsRoute')
 
 module.exports = async function (fastify, opts) {
   const collection = fastify.mongo.db.collection('news')
   const newsSchema = schemas.news
   const properties = newsSchema.properties
+
+  // inserted cors to get data in ionic app
+  const allowedOrigins = [
+    'capacitor://localhost',
+    'ionic://localhost',
+    'http://localhost',
+    'http://localhost:8080',
+    'http://localhost:8100'
+  ];
+
+  fastify.register(require('fastify-cors'), {
+    allowedOrigins
+  })
 
   const response = {
     200: {
